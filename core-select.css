@@ -1,0 +1,138 @@
+/*
+ * Core Select - Modern Theme
+ * A clean, professional, and customizable theme.
+ */
+
+/* ==========================================================================
+   CSS Variables for Easy Theming
+   ========================================================================== */
+
+:root {
+  --cs-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  --cs-font-size: 1rem;
+  --cs-border-color: #ced4da;
+  --cs-border-color-focus: #86b7fe;
+  --cs-border-radius: 0.375rem; /* 6px */
+  --cs-primary-color: #0d6efd; /* Your brand's primary color */
+  --cs-highlight-bg: var(--cs-primary-color);
+  --cs-highlight-text-color: #ffffff;
+  --cs-dropdown-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  --cs-input-padding-y: 0.5rem; /* 8px */
+  --cs-input-padding-x: 0.75rem; /* 12px */
+}
+
+
+/* ==========================================================================
+   Main Wrapper
+   ========================================================================== */
+
+.core-select-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  font-family: var(--cs-font-family);
+}
+
+/* Style the original input to look like a modern form control */
+.core-select-wrapper input[type="text"] {
+  display: block;
+  width: 100%;
+  padding: var(--cs-input-padding-y) var(--cs-input-padding-x);
+  font-size: var(--cs-font-size);
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid var(--cs-border-color);
+  appearance: none; /* Removes default browser styling */
+  border-radius: var(--cs-border-radius);
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  box-sizing: border-box; /* Ensures padding doesn't affect final width */
+  cursor: pointer;
+}
+
+/* Add a dropdown arrow icon using an embedded SVG */
+.core-select-wrapper input[type="text"] {
+  padding-right: 2.5rem; /* Make space for the icon */
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 16px 12px;
+}
+
+/* Focus state for the input */
+.core-select-wrapper input[type="text"]:focus {
+  border-color: var(--cs-border-color-focus);
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* ==========================================================================
+   Dropdown Container
+   ========================================================================== */
+
+.core-select-dropdown {
+  position: absolute;
+  top: calc(100% + 4px); /* A little space between input and dropdown */
+  left: 0;
+  right: 0;
+  z-index: 1050; /* High z-index to appear above other content */
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.175);
+  border-radius: var(--cs-border-radius);
+  box-shadow: var(--cs-dropdown-shadow);
+  max-height: 220px;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+
+/* ==========================================================================
+   Dropdown Items and Messages
+   ========================================================================== */
+
+.core-select-option,
+.core-select-message {
+  display: block;
+  width: 100%;
+  padding: 0.65rem 1rem;
+  font-size: var(--cs-font-size);
+  font-weight: 400;
+  color: #212529;
+  text-align: inherit;
+  white-space: nowrap;
+  background-color: transparent;
+  border: 0;
+  box-sizing: border-box;
+}
+
+.core-select-option {
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.1s ease-in-out, background-color 0.1s ease-in-out;
+}
+
+/* Hover and Keyboard Highlight State */
+.core-select-option:hover,
+.core-select-option.highlighted {
+  color: var(--cs-highlight-text-color);
+  background-color: var(--cs-highlight-bg);
+}
+
+/* Allow complex HTML within options */
+.core-select-option * {
+  pointer-events: none; /* Prevents clicks on children from interfering */
+}
+
+/* Ensure hover/highlight state correctly colors children */
+.core-select-option:hover *,
+.core-select-option.highlighted * {
+  color: inherit;
+}
+
+/* Style for messages like "Loading...", "No results", etc. */
+.core-select-message {
+  color: #6c757d;
+  font-style: italic;
+}
