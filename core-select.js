@@ -140,10 +140,15 @@
           break;
       }
     }
-
     _handleSelection(e) {
-      const selectedData = J(e.currentTarget).data('core-select-item');
-      if (selectedData) this.select(selectedData);
+      // core.js uses native events, so currentTarget is the dropdown wrapper. 
+      // We use e.target and .closest() to accurately capture the clicked option.
+      const $option = J(e.target).closest('.core-select-option');
+      const selectedData = $option.data('core-select-item');
+      
+      if (selectedData) {
+        this.select(selectedData);
+      }
     }
 
     _search(term) {
