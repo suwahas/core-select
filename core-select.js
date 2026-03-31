@@ -140,6 +140,7 @@
           break;
       }
     }
+
     _handleSelection(e) {
       // core.js uses native events, so currentTarget is the dropdown wrapper. 
       // We use e.target and .closest() to accurately capture the clicked option.
@@ -168,9 +169,14 @@
       this.state.isLoading = true;
       this._renderMessage('Loading...');
 
+      // Allow dynamic data mapping via function, fallback to default searchParam
+      const ajaxData = typeof this.settings.ajax.data === 'function'
+        ? this.settings.ajax.data(term)
+        : { [this.settings.searchParam]: term, ...(this.settings.ajax.data || {}) };
+
       J.ajax({
         ...this.settings.ajax,
-        data: { term, ...(this.settings.ajax.data || {}) },
+        data: ajaxData,
         success: (response) => {
           // Race Condition Fix: Ignore if user typed something else while waiting
           if (this.state.currentAjaxTerm !== term) return;
@@ -301,6 +307,7 @@
   CoreSelect.defaults = {
     placeholder: 'Select an option',
     minimumInputLength: 1,
+    searchParam: 'term', // The API query parameter for the search string
     data: null,
     ajax: null,
     escapeMarkup: true, // Security: Default to text() to prevent XSS
