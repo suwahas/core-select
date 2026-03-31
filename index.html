@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Core Select - Modern JavaScript Select</title>
+    
+    <!-- 1. Core Select CSS (Handles Dark Mode, Scrollbars, Truncation) -->
+    <link rel="stylesheet" href="core-select.css">
+
+    <!-- Page Styling (Just to make the demo look like a premium doc site) -->
+    <style>
+        :root {
+            --bg: #f8f9fa;
+            --text: #212529;
+            --card-bg: #ffffff;
+            --border: #e9ecef;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #121212;
+                --text: #e0e0e0;
+                --card-bg: #1e1e1e;
+                --border: #333333;
+            }
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .hero { text-align: center; margin-bottom: 3rem; }
+        .hero h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .hero p { color: #6c757d; font-size: 1.1rem; }
+        .badge { background: #0d6efd; color: white; padding: 0.25rem 0.75rem; border-radius: 50px; font-size: 0.85rem; font-weight: bold; }
+        
+        .demo-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .demo-card h3 { margin-top: 0; margin-bottom: 1rem; }
+        .demo-card p { font-size: 0.95rem; color: #6c757d; margin-bottom: 1.5rem; }
+        
+        .output-box {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(13, 110, 253, 0.1);
+            border-left: 4px solid #0d6efd;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            min-height: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hero">
+        <h1>Core Select <span class="badge">v2.0</span></h1>
+        <p>A lightning-fast, jQuery-free select replacement powered by <strong>core.js</strong>.</p>
+        <p style="font-size: 0.9rem;"><em>💡 Pro Tip: Toggle your OS Dark Mode to see the CSS instantly react.</em></p>
+    </div>
+
+    <!-- DEMO 1: Local Data & XSS Protection -->
+    <div class="demo-card">
+        <h3>1. Local Data & Security</h3>
+        <p>Blazing fast O(1) local filtering. Notice how the malicious script tag in the data is safely escaped by default.</p>
+        
+        <input type="text" id="demo-local" name="framework" autocomplete="off">
+        
+        <div class="output-box" id="output-local">Selection will appear here...</div>
+    </div>
+
+    <!-- DEMO 2: Advanced AJAX & Rich Templating -->
+    <div class="demo-card">
+        <h3>2. Live AJAX & Rich HTML Templating</h3>
+        <p>Fetches live data from DummyJSON. Features built-in debouncing, race-condition protection, and custom HTML rendering.</p>
+        
+        <input type="text" id="demo-ajax" name="user" autocomplete="off">
+        
+        <div class="output-box" id="output-ajax">Selection will appear here...</div>
+    </div>
+
+    <!-- 2. Load Core JS from CDN -->
+    <script src="https://cdn.jsdelivr.net/gh/suwahas/core-js@master/core.min.js"></script>
+    
+    <!-- 3. Load Core Select Plugin -->
+    <script src="core-select.js"></script>
+
+    <!-- 4. Initialization Script -->
+    <script>
+        J(document).ready(function() {
+            
+            // ==========================================
+            // DEMO 1: Local Data 
+            // ==========================================
+            J('#demo-local').coreSelect({
+                placeholder: 'Select a frontend framework...',
+                data: [
+                    { id: 'react', text: 'React.js' },
+                    { id: 'vue', text: 'Vue.js' },
+                    { id: 'svelte', text: 'Svelte' },
+                    { id: 'solid', text: 'SolidJS' },
+                    { id: 'xss', text: '<script>alert("XSS Attack!")<\/script> (Safely Escaped)' }
+                ],
+                onSelect: function(item) {
+                    J('#output-local').text('Selected ID: ' + item.id + ' | Text: ' + item.text);
+                }
+            });
+
+
+            // ==========================================
+            // DEMO 2: Advanced AJAX & Custom Templating
+            // ==========================================
+            J('#demo-ajax').coreSelect({
+                placeholder: 'Type to search users (e.g., "John")...',
+                minimumInputLength: 2,
+                escapeMarkup: false, // We set this to false because we WANT to render HTML below
+                
+                // Native AJAX powered by core.js
+                ajax: {
+                    url: 'https://dummyjson.com/users/search',
+                    // Map the typed term to the API's required query parameter
+                    data: { limit: 10 }, // You can pass static data here
+                    
+                    // The 'processResults' hook formats the raw API response into our required format
+                    processResults: function(response) {
+                        return response.users.map(user => ({
+                            id: user.id,
+                            text: user.firstName + ' ' + user.lastName,
+                            email: user.email,
+                            image: user.image,
+                            role: user.company.title
+                        }));
+                    }
+                },
+                
+                // Custom HTML for the dropdown list
+                formatResult: function(item) {
+                    return `
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <img src="${item.image}" alt="Avatar" style="width: 36px; height: 36px; border-radius: 50%; background: #f0f0f0;">
+                            <div style="overflow: hidden;">
+                                <div style="font-weight: 600; text-overflow: ellipsis; overflow: hidden;">${item.text}</div>
+                                <div style="font-size: 0.8em; color: var(--cs-text-muted); text-overflow: ellipsis; overflow: hidden;">
+                                    ${item.role} &bull; ${item.email}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                },
+                
+                // What shows up in the input box AFTER selecting
+                formatSelection: function(item) {
+                    return item.text + ' (' + item.email + ')';
+                },
+                
+                // Callback event
+                onSelect: function(item) {
+                    J('#output-ajax').html(`<strong>Selected User:</strong> ${item.text} <br><strong>ID:</strong> ${item.id}`);
+                }
+            });
+
+        });
+    </script>
+</body>
+</html>
