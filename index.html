@@ -82,7 +82,7 @@
     <!-- DEMO 2: Advanced AJAX & Rich Templating -->
     <div class="demo-card">
         <h3>2. Live AJAX & Rich HTML Templating</h3>
-        <p>Fetches live data from DummyJSON. Features built-in debouncing, race-condition protection, and custom HTML rendering.</p>
+        <p>Fetches live data from DummyJSON. Features built-in debouncing, dynamic parameter mapping, race-condition protection, and custom HTML rendering.</p>
         
         <input type="text" id="demo-ajax" name="user" autocomplete="off">
         
@@ -124,12 +124,12 @@
                 placeholder: 'Type to search users (e.g., "John")...',
                 minimumInputLength: 2,
                 escapeMarkup: false, // We set this to false because we WANT to render HTML below
+                searchParam: 'q',    // Elegantly tells the engine to use ?q= instead of ?term=
                 
                 // Native AJAX powered by core.js
                 ajax: {
                     url: 'https://dummyjson.com/users/search',
-                    // Map the typed term to the API's required query parameter
-                    data: { limit: 10 }, // You can pass static data here
+                    data: { limit: 10 }, // Clean, static parameters
                     
                     // The 'processResults' hook formats the raw API response into our required format
                     processResults: function(response) {
