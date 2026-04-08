@@ -1,6 +1,6 @@
 /*
  * Core Select - Modern Theme
- * A clean, professional, accessible, and dark-mode ready theme.
+ * A premium, accessible, and dark-mode ready theme.
  */
 
 /* ==========================================================================
@@ -9,42 +9,52 @@
 
 :root {
   /* Typography & Spacing */
-  --cs-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --cs-font-size: 1rem;
-  --cs-input-padding-y: 0.5rem;
-  --cs-input-padding-x: 0.75rem;
-  --cs-border-radius: 0.375rem;
+  --cs-font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --cs-font-size: 0.95rem;
+  --cs-input-padding-y: 0.625rem;
+  --cs-input-padding-x: 0.875rem;
+  --cs-border-radius: 0.5rem; /* Smoother, modern radius */
   --cs-z-index: 1050;
 
-  /* Light Mode Colors (Default) */
+  /* Light Mode Colors (Tailwind Slate/Blue Inspired) */
   --cs-bg-color: #ffffff;
-  --cs-text-color: #212529;
-  --cs-text-muted: #6c757d;
-  --cs-border-color: #ced4da;
-  --cs-border-color-focus: #86b7fe;
-  --cs-primary-color: #0d6efd;
+  --cs-text-color: #0f172a;
+  --cs-text-muted: #64748b;
+  --cs-border-color: #cbd5e1;
+  --cs-border-color-hover: #94a3b8;
+  --cs-border-color-focus: #3b82f6;
+  --cs-primary-color: #eff6ff; /* Light blue highlight */
   --cs-highlight-bg: var(--cs-primary-color);
-  --cs-highlight-text-color: #ffffff;
-  --cs-dropdown-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-  --cs-focus-ring: rgba(13, 110, 253, 0.25);
+  --cs-highlight-text-color: #1d4ed8;
   
-  /* SVG Arrow (Dark Gray) */
-  --cs-arrow-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+  /* Modern Shadows & Rings */
+  --cs-input-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --cs-dropdown-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --cs-focus-ring: rgba(59, 130, 246, 0.25);
+  
+  /* SVG Arrow (Slate 500) */
+  --cs-arrow-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2364748b' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
 }
 
 /* Dark Mode Auto-Detection */
 @media (prefers-color-scheme: dark) {
   :root {
-    --cs-bg-color: #212529;
-    --cs-text-color: #f8f9fa;
-    --cs-text-muted: #adb5bd;
-    --cs-border-color: #495057;
-    --cs-border-color-focus: #9ec5fe;
-    --cs-dropdown-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.5);
-    --cs-focus-ring: rgba(13, 110, 253, 0.5);
+    --cs-bg-color: #1e293b; /* Slate 800 */
+    --cs-text-color: #f8fafc; /* Slate 50 */
+    --cs-text-muted: #94a3b8; /* Slate 400 */
+    --cs-border-color: #334155; /* Slate 700 */
+    --cs-border-color-hover: #475569;
+    --cs-border-color-focus: #60a5fa;
+    --cs-primary-color: #3b82f6;
+    --cs-highlight-bg: var(--cs-primary-color);
+    --cs-highlight-text-color: #ffffff;
     
-    /* SVG Arrow (Light Gray) */
-    --cs-arrow-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23f8f9fa' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+    --cs-input-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+    --cs-dropdown-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -4px rgba(0, 0, 0, 0.5);
+    --cs-focus-ring: rgba(96, 165, 250, 0.25);
+    
+    /* SVG Arrow (Slate 400) */
+    --cs-arrow-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2394a3b8' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
   }
 }
 
@@ -54,7 +64,7 @@
 
 .core-select-wrapper {
   position: relative;
-  display: inline-block;
+  display: block; /* Better layout flow */
   width: 100%;
   font-family: var(--cs-font-family);
 }
@@ -64,6 +74,7 @@
   width: 100%;
   padding: var(--cs-input-padding-y) 2.5rem var(--cs-input-padding-y) var(--cs-input-padding-x);
   font-size: var(--cs-font-size);
+  font-family: inherit;
   font-weight: 400;
   line-height: 1.5;
   color: var(--cs-text-color);
@@ -71,6 +82,7 @@
   background-clip: padding-box;
   border: 1px solid var(--cs-border-color);
   border-radius: var(--cs-border-radius);
+  box-shadow: var(--cs-input-shadow);
   appearance: none;
   box-sizing: border-box;
   cursor: pointer;
@@ -81,26 +93,31 @@
   text-overflow: ellipsis;
 
   /* Hardware Accelerated Transitions */
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, background-color 0.15s ease-in-out;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 
   /* Dropdown Arrow */
   background-image: var(--cs-arrow-icon);
   background-repeat: no-repeat;
-  background-position: right 0.75rem center;
-  background-size: 16px 12px;
+  background-position: right 0.875rem center;
+  background-size: 14px 10px;
 }
 
-/* Focus State */
+/* Hover State */
+.core-select-wrapper input[type="text"]:hover:not(:disabled) {
+  border-color: var(--cs-border-color-hover);
+}
+
+/* Focus State (Offset Ring) */
 .core-select-wrapper input[type="text"]:focus {
   border-color: var(--cs-border-color-focus);
   outline: 0;
-  box-shadow: 0 0 0 0.25rem var(--cs-focus-ring);
+  box-shadow: 0 0 0 3px var(--cs-focus-ring);
 }
 
 /* Disabled State */
 .core-select-wrapper input[type="text"]:disabled {
   background-color: var(--cs-border-color); /* Acts as a muted background */
-  opacity: 0.65;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
@@ -108,9 +125,14 @@
    Dropdown Container
    ========================================================================== */
 
+@keyframes cs-slide-down {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .core-select-dropdown {
   position: absolute;
-  top: calc(100% + 4px);
+  top: calc(100% + 6px); /* Slight gap */
   left: 0;
   right: 0;
   z-index: var(--cs-z-index);
@@ -118,9 +140,14 @@
   border: 1px solid var(--cs-border-color);
   border-radius: var(--cs-border-radius);
   box-shadow: var(--cs-dropdown-shadow);
-  max-height: 220px;
+  max-height: 260px;
   overflow-y: auto;
   box-sizing: border-box;
+  padding: 0.25rem; /* Inner padding for floating options */
+  
+  /* Entry Animation */
+  animation: cs-slide-down 0.15s cubic-bezier(0, 0, 0.2, 1) forwards;
+  transform-origin: top;
   
   /* Smooth scrolling for iOS */
   -webkit-overflow-scrolling: touch;
@@ -128,7 +155,7 @@
 
 /* Custom Scrollbars (Webkit) for a Premium Feel */
 .core-select-dropdown::-webkit-scrollbar {
-  width: 8px;
+  width: 14px; /* Wider for easier clicking */
 }
 .core-select-dropdown::-webkit-scrollbar-track {
   background: transparent;
@@ -136,7 +163,7 @@
 .core-select-dropdown::-webkit-scrollbar-thumb {
   background-color: var(--cs-border-color);
   border-radius: 10px;
-  border: 2px solid var(--cs-bg-color); /* Creates padding around the thumb */
+  border: 4px solid var(--cs-bg-color); /* Creates padding around the thumb */
 }
 .core-select-dropdown::-webkit-scrollbar-thumb:hover {
   background-color: var(--cs-text-muted);
@@ -150,19 +177,26 @@
 .core-select-message {
   display: block;
   width: 100%;
-  padding: 0.65rem 1rem;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 2px;
   font-size: var(--cs-font-size);
   font-weight: 400;
   color: var(--cs-text-color);
   text-align: inherit;
   background-color: transparent;
   border: 0;
+  border-radius: calc(var(--cs-border-radius) - 0.25rem);
   box-sizing: border-box;
+  transition: background-color 0.1s ease, color 0.1s ease;
   
   /* Text Truncation */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.core-select-option:last-child {
+  margin-bottom: 0;
 }
 
 .core-select-option {
@@ -193,4 +227,5 @@
   color: var(--cs-text-muted);
   font-style: italic;
   text-align: center;
+  padding: 1rem;
 }
