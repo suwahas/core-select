@@ -3,99 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Core Select Demo - Modern JavaScript Select</title>
+    <title>Core Select - Premium UI Component</title>
     
-    <!-- 1. Core Select CSS (Handles Dark Mode, Scrollbars, Truncation) -->
     <link rel="stylesheet" href="core-select.css">
 
-    <!-- Page Styling (Just to make the demo look like a premium doc site) -->
     <style>
         :root {
-            --bg: #f8f9fa;
-            --text: #212529;
+            --bg: #f8fafc;
+            --text: #0f172a;
             --card-bg: #ffffff;
-            --border: #e9ecef;
+            --border: #e2e8f0;
+            --accent: #3b82f6;
         }
         @media (prefers-color-scheme: dark) {
             :root {
-                --bg: #121212;
-                --text: #e0e0e0;
-                --card-bg: #1e1e1e;
-                --border: #333333;
+                --bg: #0f172a;
+                --text: #f8fafc;
+                --card-bg: #1e293b;
+                --border: #334155;
             }
         }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
             background-color: var(--bg);
             color: var(--text);
             line-height: 1.6;
             padding: 2rem;
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
+            -webkit-font-smoothing: antialiased;
         }
-        .hero { text-align: center; margin-bottom: 3rem; }
-        .hero h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
-        .hero p { color: #6c757d; font-size: 1.1rem; }
-        .badge { background: #0d6efd; color: white; padding: 0.25rem 0.75rem; border-radius: 50px; font-size: 0.85rem; font-weight: bold; }
+        .hero { text-align: center; margin-bottom: 4rem; padding-top: 2rem; }
+        .hero h1 { font-size: 3rem; font-weight: 800; margin-bottom: 0.5rem; letter-spacing: -0.025em; }
+        .hero p { color: #64748b; font-size: 1.25rem; max-width: 600px; margin: 0 auto; }
+        .badge { background: var(--accent); color: white; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.875rem; font-weight: 600; vertical-align: middle; margin-left: 0.5rem; }
         
+        .grid { display: grid; gap: 2rem; grid-template-columns: 1fr; }
+        @media (min-width: 768px) { .grid { grid-template-columns: 1fr 1fr; } }
+
         .demo-card {
             background-color: var(--card-bg);
             border: 1px solid var(--border);
-            border-radius: 12px;
+            border-radius: 1rem;
             padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            display: flex;
+            flex-direction: column;
         }
-        .demo-card h3 { margin-top: 0; margin-bottom: 1rem; }
-        .demo-card p { font-size: 0.95rem; color: #6c757d; margin-bottom: 1.5rem; }
+        .demo-card h3 { margin-top: 0; font-size: 1.25rem; margin-bottom: 0.5rem; }
+        .demo-card p { font-size: 0.95rem; color: #64748b; margin-bottom: 1.5rem; flex-grow: 1; }
         
         .output-box {
-            margin-top: 1rem;
+            margin-top: 1.5rem;
             padding: 1rem;
-            background: rgba(13, 110, 253, 0.1);
-            border-left: 4px solid #0d6efd;
-            border-radius: 4px;
-            font-family: monospace;
-            font-size: 0.9rem;
-            min-height: 20px;
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--accent);
+            border-radius: 0.5rem;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 0.875rem;
+            word-break: break-all;
         }
+
+        .btn {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .btn:hover { border-color: var(--accent); color: var(--accent); }
+        .btn-primary { background-color: var(--accent); color: white; border-color: var(--accent); }
+        .btn-primary:hover { background-color: #2563eb; color: white; }
+        
+        .btn-group { margin-top: 1rem; }
     </style>
 </head>
 <body>
 
     <div class="hero">
-        <h1>Core Select <span class="badge">v2.0</span></h1>
-        <p>A lightning-fast, jQuery-free select replacement powered by <strong>core.js</strong>.</p>
-        <p style="font-size: 0.9rem;"><em>💡 Pro Tip: Toggle your OS Dark Mode to see the CSS instantly react.</em></p>
+        <h1>Core Select <span class="badge">v2.3</span></h1>
+        <p>A lightning-fast, accessible, and deeply customizable select replacement powered by <strong>core.js</strong>.</p>
     </div>
 
-    <!-- DEMO 1: Local Data & XSS Protection -->
-    <div class="demo-card">
-        <h3>1. Local Data & Security</h3>
-        <p>Blazing fast O(1) local filtering. Notice how the malicious script tag in the data is safely escaped by default.</p>
-        
-        <input type="text" id="demo-local" name="framework" autocomplete="off">
-        
-        <div class="output-box" id="output-local">Selection will appear here...</div>
+    <div class="grid">
+        <!-- DEMO 1: Local Data & XSS Protection -->
+        <div class="demo-card">
+            <h3>1. Local Data & Security</h3>
+            <p>Blazing fast O(1) local filtering. Notice how the malicious script tag in the data is safely escaped by default.</p>
+            
+            <input type="text" id="demo-local" name="framework" autocomplete="off">
+            
+            <div class="output-box" id="output-local">Selection will appear here...</div>
+        </div>
+
+        <!-- DEMO 2: Advanced AJAX & Rich Templating -->
+        <div class="demo-card">
+            <h3>2. Live AJAX & Rich HTML</h3>
+            <p>Fetches live data from DummyJSON. Features built-in debouncing, true network XHR abortion, and custom HTML rendering.</p>
+            
+            <input type="text" id="demo-ajax" name="user_id" autocomplete="off">
+            
+            <div class="output-box" id="output-ajax">Selection will appear here...</div>
+        </div>
+
+        <!-- DEMO 3: Form Lifecycle Sync -->
+        <div class="demo-card">
+            <h3>3. Native Form Reset Sync</h3>
+            <p>Most plugins break when a form is reset. Type something, select it, then click Reset. The plugin perfectly syncs with the DOM.</p>
+            
+            <form id="demo-form" style="background: var(--bg); padding: 1rem; border-radius: 0.5rem; border: 1px dashed var(--border);">
+                <label style="display: block; margin-bottom: 0.5rem; font-size: 0.875rem; font-weight: 500;">Select a Country</label>
+                <input type="text" id="demo-form-select" name="country_code" value="United States" autocomplete="off">
+                
+                <div class="btn-group" style="display: flex; gap: 0.5rem; align-items: center;">
+                    <button type="submit" class="btn btn-primary" style="margin: 0;">Submit Form</button>
+                    <button type="reset" class="btn" style="margin: 0;">Reset Form</button>
+                </div>
+            </form>
+            
+            <div class="output-box" id="output-form">Form payload will appear here...</div>
+        </div>
+
+        <!-- DEMO 4: Programmatic API -->
+        <div class="demo-card">
+            <h3>4. Programmatic API</h3>
+            <p>Powered by the new <code>J.plugin()</code> factory. Control the instance externally and destroy it cleanly without memory leaks.</p>
+            
+            <input type="text" id="demo-api" name="api_test" autocomplete="off">
+            
+            <div class="btn-group">
+                <button class="btn" onclick="J('#demo-api').coreSelect('open')">.open()</button>
+                <button class="btn" onclick="J('#demo-api').coreSelect('close')">.close()</button>
+                <button class="btn" style="border-color: #ef4444; color: #ef4444;" onclick="J('#demo-api').coreSelect('destroy')">.destroy()</button>
+            </div>
+        </div>
     </div>
 
-    <!-- DEMO 2: Advanced AJAX & Rich Templating -->
-    <div class="demo-card">
-        <h3>2. Live AJAX & Rich HTML Templating</h3>
-        <p>Fetches live data from DummyJSON. Features built-in debouncing, dynamic parameter mapping, race-condition protection, and custom HTML rendering.</p>
-        
-        <input type="text" id="demo-ajax" name="user" autocomplete="off">
-        
-        <div class="output-box" id="output-ajax">Selection will appear here...</div>
-    </div>
-
-    <!-- 2. Load Core JS from CDN -->
-    <script src="https://cdn.jsdelivr.net/gh/suwahas/core-js@master/core.min.js"></script>
-    
-    <!-- 3. Load Core Select Plugin -->
+    <!-- Load Local Core JS (Tests the actual file we built) -->
+    <script src="core.js"></script>
     <script src="core-select.js"></script>
 
-    <!-- 4. Initialization Script -->
     <script>
         J(document).ready(function() {
             
@@ -121,17 +174,15 @@
             // DEMO 2: Advanced AJAX & Custom Templating
             // ==========================================
             J('#demo-ajax').coreSelect({
-                placeholder: 'Type to search users (e.g., "John")...',
+                placeholder: 'Search users (e.g., "John")...',
                 minimumInputLength: 2,
-                escapeMarkup: false, // We set this to false because we WANT to render HTML below
-                searchParam: 'q',    // Elegantly tells the engine to use ?q= instead of ?term=
+                escapeMarkup: false, // Allow HTML rendering
+                searchParam: 'q',
+                idParam: 'id', // Maps the hidden input to the 'id' property
                 
-                // Native AJAX powered by core.js
                 ajax: {
                     url: 'https://dummyjson.com/users/search',
-                    data: { limit: 10 }, // Clean, static parameters
-                    
-                    // The 'processResults' hook formats the raw API response into our required format
+                    data: { limit: 10 },
                     processResults: function(response) {
                         return response.users.map(user => ({
                             id: user.id,
@@ -143,13 +194,12 @@
                     }
                 },
                 
-                // Custom HTML for the dropdown list
                 formatResult: function(item) {
                     return `
                         <div style="display: flex; align-items: center; gap: 12px;">
-                            <img src="${item.image}" alt="Avatar" style="width: 36px; height: 36px; border-radius: 50%; background: #f0f0f0;">
+                            <img src="${item.image}" alt="Avatar" style="width: 32px; height: 32px; border-radius: 50%; background: var(--bg);">
                             <div style="overflow: hidden;">
-                                <div style="font-weight: 600; text-overflow: ellipsis; overflow: hidden;">${item.text}</div>
+                                <div style="font-weight: 500; text-overflow: ellipsis; overflow: hidden;">${item.text}</div>
                                 <div style="font-size: 0.8em; color: var(--cs-text-muted); text-overflow: ellipsis; overflow: hidden;">
                                     ${item.role} &bull; ${item.email}
                                 </div>
@@ -158,15 +208,54 @@
                     `;
                 },
                 
-                // What shows up in the input box AFTER selecting
                 formatSelection: function(item) {
                     return item.text + ' (' + item.email + ')';
                 },
                 
-                // Callback event
                 onSelect: function(item) {
-                    J('#output-ajax').html(`<strong>Selected User:</strong> ${item.text} <br><strong>ID:</strong> ${item.id}`);
+                    J('#output-ajax').html(`<strong>Selected User:</strong> ${item.text} <br><strong>Hidden Input Value (ID):</strong> ${item.id}`);
                 }
+            });
+
+            // ==========================================
+            // DEMO 3: Form Lifecycle Sync
+            // ==========================================
+            
+            // Note: We set a default 'value="United States"' on the input in HTML.
+            // The plugin will automatically read it on init.
+            
+            // To simulate setting the hidden input value on init, we can do it manually here, 
+            // or let the user select it. For the demo, we just init the plugin.
+            J('#demo-form-select').coreSelect({
+                placeholder: 'Select a country...',
+                data: [
+                    { id: 'US', text: 'United States' },
+                    { id: 'CA', text: 'Canada' },
+                    { id: 'UK', text: 'United Kingdom' },
+                    { id: 'AU', text: 'Australia' }
+                ]
+            });
+
+            // Set the hidden input to match the default text for the demo
+            J('input[name="country_code"]').val('US');
+
+            J('#demo-form').on('submit', function(e) {
+                e.preventDefault();
+                // Use core.js serialize() to get the form data
+                const payload = J(this).serialize();
+                J('#output-form').text('Form Submitted: \n' + decodeURIComponent(payload).replace(/&/g, '\n'));
+            });
+
+            // ==========================================
+            // DEMO 4: Programmatic API
+            // ==========================================
+            J('#demo-api').coreSelect({
+                placeholder: 'I am controlled by buttons...',
+                data: [
+                    { id: '1', text: 'Option 1' },
+                    { id: '2', text: 'Option 2' },
+                    { id: '3', text: 'Option 3' }
+                ]
             });
 
         });
