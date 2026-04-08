@@ -118,7 +118,8 @@
     }
 
     _handleFocus() {
-        if (this.settings.data && !this.elements.$input.val()) {
+        // Fix: Always render local data on initial focus, even if a default value exists
+        if (this.settings.data && this.state.results.length === 0) {
             this._renderDropdown(this.settings.data);
         } else if (this.state.results.length > 0) {
             this.open();
@@ -128,6 +129,11 @@
     _handleInput() {
       const term = this.elements.$input.val().trim();
       if (term.length < this.settings.minimumInputLength) {
+        // Proactive Fix: Abort pending AJAX if user backspaces the input to empty
+        if (this.state.currentXhr) {
+          this.state.currentXhr.abort();
+          this.state.currentXhr = null;
+        }
         this.close();
         return;
       }
@@ -360,8 +366,13 @@
       }
 
       this.elements.$input.attr('aria-expanded', 'true');
-      // Use instance-specific namespace to prevent cross-instance event collision
-      J(document).on(`click.coreSelect.${this.state.id}`, this.boundDocumentClick);
+      
+      // Fix: Delay document listener binding to prevent immediate event bubbling closure
+      setTimeout(() => {
+        if (this.state.isOpen) {
+          J(document).on(`click.coreSelect.${this.state.id}`, this.boundDocumentClick);
+        }
+      }, 0);
     }
 
     close() {
